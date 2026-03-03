@@ -5,14 +5,12 @@ hosts:
     base_box:
       image: ubuntu-noble-x86_64
       mgmt_user: ubuntu
-      mgmt_protocol: SSH
     flavor: standard.small
     
   - name: signal-server
     base_box:
       image: Signal-Server
       mgmt_user: ubuntu
-      mgmt_protocol: SSH
     flavor: standard.small
     
   - name: windows-host
@@ -27,7 +25,6 @@ routers:
     base_box:
       image: pfsense-netgate
       mgmt_user: admin
-      mgmt_protocol: SSH
     flavor: standard.small
 
 networks:
@@ -58,8 +55,5 @@ router_mappings:
     network: client-network
     ip: 192.168.30.1
 
-dns:
-  - network: client-network
-    forwarders:
-      - 8.8.8.8
-      - 8.8.4.4
+# groups can be added if needed
+groups: []
