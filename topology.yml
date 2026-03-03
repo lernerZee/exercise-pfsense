@@ -23,8 +23,8 @@ hosts:
 routers:
   - name: firewall
     base_box:
-      image: pfsense-2.8
-      mgmt_user: admin
+      image: debian-12-x86_64
+      mgmt_user: debian
     flavor: standard.small
 
 networks:
