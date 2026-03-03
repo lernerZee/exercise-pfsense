@@ -1,325 +1,70 @@
 {
-  "title": "CyberRangeCZ Platform - Demo Content (terminal)",
-  "description": "The demo contains all types of levels to demonstrate the training capabilities of the CyberRangeCZ Platform.",
-  "prerequisites": [],
-  "outcomes": [
-    "Scanning ports with nmap",
-    "Password guessing with hydra at telnet",
-    "Privilege escalation using misconfigured sudo"
-  ],
-  "state": "UNRELEASED",
+  "title": "Library Demo Training",
+  "description": "Multi-platform cybersecurity training with Ubuntu, Signal Server, Windows Server, and pfSense",
+  "state": "unreleased",
   "levels": [
     {
-      "title": "Info",
-      "level_type": "INFO_LEVEL",
-      "order": 0,
-      "estimated_duration": 0,
-      "minimal_possible_solve_time": null,
-      "content": "# Demo Summary\n\nThe demo contains all types of levels to demonstrate the training capabilities of the CyberRangeCZ Platform.\n\n**Note**: It is recommended to use the Chrome browser. In case you run into difficulties with submitting the answer, try to Log out and Log in again. \n\n| Level | Level Name | Level Type |\n|:------:|------| ------ |\n| 1. | Info | Info |\n| 2. | Finding Open Ports | Training |\n| 3. | Connecting via Telnet | Training |\n| 4. | Privilege Escalation | Training |\n| 5. | Test Example | Assessment |\n| 6. | Assessment Example | Assessment |\n\n## Info\n\nThe level contains this information page.\n\n## Finding open ports\n\nThe level provides information on how to connect to a sandbox. In general, there are two possible options. The first option is to use the platform'a GUI to connect to the machine via Spice console. The second option is to connect through SSH with a generated config file and keys.\n\nThis level's small challenge is to scan open ports.\n\n## Connecting Via Telnet\n\nThis level's challenge is to connect to the server machine without a password and discover the secret answer.\n\n## Privilege Escalation\n\nThis demo's bigger challenge is to gain root privileges and read an answer available only to a root user. Enjoy! \n\n## Test Example\n\nThe level contains a simple example of a test. Tests can be used, for example, for additional testing of students for grading purposes.\n\n## Assessment Example\n\nThe level contains a simple example of a test. For example, the tests can be used to verify the learning outcomes or for collecting feedback.\n"
+      "type": "info",
+      "title": "Welcome to Library Demo Training",
+      "content": "# 🎯 Welcome!\n\nThis training environment provides hands-on experience with multiple operating systems and network configurations.\n\n## What's Included:\n- **Ubuntu Server 24.04** - Linux fundamentals\n- **Signal Server** - Messaging service administration\n- **Windows Server 2022** - Windows system administration\n- **pfSense Firewall** - Network security and routing\n\n## Time Allocated: 3 hours\n\nClick 'Next' to begin your training journey!"
     },
     {
-      "title": "Get Access",
-      "level_type": "ACCESS_LEVEL",
-      "order": 1,
-      "estimated_duration": 0,
-      "minimal_possible_solve_time": null,
-      "passkey": "start",
-      "cloud_content": "Your first task is to access the sandbox, where you will complete all following tasks. After you have successfully connected, Submit the answer **`start`**.\n\n### Sandbox access\n1. In the topology overview on the right, right-click on **`client`** and then click on **`Open console`**, and a new pop-up window will appear. \n2. Login with username **`user`** and password **`Password123`**.\n\nAlternatively, you can use SSH to connect to the machine. SSH access makes it easier to copy-paste commands and flags, but requires more steps to set up. See [documentation](https://docs.platform.cyberrange.cz/user-guide-advanced/sandboxes/sandbox-access/#user-access) for more details.",
-      "local_content": "This sandbox has not been tested for use with local sandbox."
+      "type": "access",
+      "title": "Access Information",
+      "content": "## 🔐 VM Access Credentials\n\n### Ubuntu Server (192.168.30.10)\n```\nSSH: ssh trainee@192.168.30.10\nPassword: [Auto-generated - shown in portal]\n```\n\n### Signal Server (192.168.30.20)\n```\nSSH: ssh trainee@192.168.30.20\nWeb UI: http://192.168.30.20:8080\n```\n\n### Windows Host (192.168.30.50)\n```\nRDP: 192.168.30.50\nUsername: trainee\nPassword: [Auto-generated - shown in portal]\n```\n\n### pfSense Firewall (192.168.30.1)\n```\nWeb GUI: https://192.168.30.1\nSSH: admin@192.168.30.1\nPassword: [Auto-generated - shown in portal]\n```\n\nAll VMs are connected and can communicate through the firewall."
     },
     {
-      "title": "Finding open ports",
-      "level_type": "TRAINING_LEVEL",
-      "order": 2,
-      "estimated_duration": 10,
-      "minimal_possible_solve_time": 1,
-      "answer": null,
-      "answer_variable_name": "telnet_port",
-      "content": "Your goal is to get access to the **server**. You know that there is a **telnet** service running on the server but it is not running on the default port. Your first task is to find the **port** on which the telnet service is running. The answer is the port number.\n",
-      "solution": "1. Look for open ports using the command **`nmap -p- 192.168.20.5`**. You can see **ssh** running on port **22** and some other service running on port **${ANSWER}**. This has to be the **telnet** service.\n\n2. Enter **`${ANSWER}`** as the answer.",
-      "solution_penalized": true,
-      "hints": [
-        {
-          "title": "Tool to find open ports",
-          "content": "A common tool to find open ports is **nmap**. You can learn how to use nmap using **`nmap --help`** or by searching online.",
-          "hint_penalty": 20,
-          "order": 0
-        }
-      ],
-      "incorrect_answer_limit": 10,
-      "attachments": [],
-      "max_score": 50,
+      "type": "training",
+      "title": "Level 1: System Exploration",
+      "content": "## 🔍 Task: Explore the Ubuntu Server\n\nYour first task is to connect to the Ubuntu server and find the hidden flag.\n\n**Steps:**\n1. SSH into the Ubuntu server\n2. Navigate to `/opt/training/`\n3. Look for files containing flags\n4. Submit the flag you find\n\n**Hints:**\n- Try `ls -la` to see hidden files\n- Check all subdirectories\n- Use `find` command to search",
+      "answer": "FLAG-{{ 1000000 | random }}-Ubuntu",
       "variant_answers": true,
-      "reference_solution": [],
-      "mitre_techniques": [
-        {
-          "technique_key": "TA0007.T1046"
-        },
-        {
-          "technique_key": "TA0043.T1595"
-        }
-      ],
-      "expected_commands": [
-        "ls",
-        "nmap"
-      ],
-      "commands_required": true
-    },
-    {
-      "title": "Connecting via Telnet",
-      "level_type": "TRAINING_LEVEL",
-      "order": 3,
-      "estimated_duration": 10,
-      "minimal_possible_solve_time": 1,
-      "answer": null,
-      "answer_variable_name": "alice_flag",
-      "content": "Now you have the port number and you would like to connect, but you don't have any credentials. Luckily you know that user **`alice`** has a weak password. You might be able to guess it. The answer is in alices home directory. There is a list of common passwords placed in your home directory for your convenience.\n\n",
-      "solution": "Replace **${telnet_port}** with the port number from the previous level:\n\n1. You know that **alice** has a weak password so you can try a dictionary attack. A list of common passwords is ready in your home directory. One of possible tools to make a password attack is **hydra**. A command to find the password is **`hydra -l alice -P passlist.txt telnet://192.168.20.5:${telnet_port}`**. This will reveal alices password **`bacon`**.\n\n2. Now you can connect to the server by using **`telnet 192.168.20.5 ${telnet_port}`**, entering username **`alice`** and her password **`bacon`**.\n\n3. To read the answer you can use **`cat flag.txt`**. The answer is **`${ANSWER}`**\n",
-      "solution_penalized": true,
       "hints": [
-        {
-          "title": "Connecting using telnet",
-          "content": "The command to connect using telnet is **`telnet <host> <port>`**, so in our case **`telnet 192.168.20.5 ${telnet_port}`**. You will be prompted to enter an username and password.",
-          "hint_penalty": 10,
-          "order": 1
-        },
-        {
-          "title": "Tool for password attacks",
-          "content": "Common tools for password attacks are **hydra** and **medusa**. Consult their help commands or man pages to find appropriate options to perform the attack. You can use the list of common passwords stored in your home directory. Use **`ls`** to list files.",
-          "hint_penalty": 20,
-          "order": 0
-        }
-      ],
-      "incorrect_answer_limit": 10,
-      "attachments": [],
-      "max_score": 100,
-      "variant_answers": true,
-      "reference_solution": [],
-      "mitre_techniques": [
-        {
-          "technique_key": "TA0006.T1110"
-        }
-      ],
-      "expected_commands": [
-        "hydra",
-        "telnet",
-        "cat"
-      ],
-      "commands_required": true
+        "Hidden files start with . (dot)",
+        "Try: find /opt/training -type f -name '*.txt'",
+        "Check the flag.txt file first"
+      ]
     },
     {
-      "title": "Privilege Escalation",
-      "level_type": "TRAINING_LEVEL",
-      "order": 4,
-      "estimated_duration": 15,
-      "minimal_possible_solve_time": 1,
-      "answer": null,
-      "answer_variable_name": "root_flag",
-      "content": "Great, you managed to login to the server as **alice** but there is not much you can do as **alice**. Can you find a way to become **root**? The answer is in the root directory.\n\nOne of common privilege escalation attack vectors is badly configured **sudo**. To see what you can use sudo for, use the **`sudo --list`** command.\n",
-      "solution": "1. You can see that the only command you can use sudo on is **`less /home/alice/flag.txt`**. There is not much to see in the flag, but you can run this as **root**. Is there a way to get a shell?\n\n2. There is, all you have to do is enter **`!sh`** while running the **`sudo less /home/alice/flag.txt`** to get a root shell.\n\n3. To get the answer, use **`cd`** to enter the root directory and **`cat flag.txt`** to read the answer. The answer is **`${ANSWER}`**",
-      "solution_penalized": true,
+      "type": "training",
+      "title": "Level 2: Signal Server API",
+      "content": "## 📱 Task: Interact with Signal Server\n\nConnect to the Signal Server and use its API to send a message.\n\n**API Endpoint:** http://192.168.30.20:8080\n\n**Tasks:**\n1. Check if the Signal Server is running\n2. Send a test message via API\n3. Find the API key or token\n4. Submit the response from the server\n\n**Example curl command:**\n```bash\ncurl -X POST http://192.168.30.20:8080/api/status\n```",
+      "answer": "FLAG-{{ 999999 | random }}-Signal",
+      "variant_answers": true,
       "hints": [
-        {
-          "title": "Using the privilege escalation",
-          "content": "You have probably figured out that you can run **sudo** on a certain **less** command. To get a shell run **`sudo less /home/alice/flag.txt`**, enter the password. Type **`!sh`** to get a root shell.",
-          "hint_penalty": 60,
-          "order": 0
-        }
-      ],
-      "incorrect_answer_limit": 10,
-      "attachments": [],
-      "max_score": 100,
+        "Check if the service is running: systemctl status signal-server",
+        "Look for API documentation in /opt/training/",
+        "Try sending a message to the test endpoint"
+      ]
+    },
+    {
+      "type": "training",
+      "title": "Level 3: Windows Administration",
+      "content": "## 🪟 Task: Windows Server Configuration\n\nConnect to the Windows Server and perform basic administrative tasks.\n\n**Tasks:**\n1. RDP into the Windows machine\n2. Find the training materials in C:\\Training\n3. Create a new local user named 'student'\n4. Find the hidden flag in the system\n\n**PowerShell commands to try:**\n```powershell\nGet-LocalUser\nNew-LocalUser -Name \"student\" -Password (ConvertTo-SecureString \"Password123!\" -AsPlainText -Force)\nGet-ChildItem C:\\ -Recurse -Force | Where-Object {$_.Name -like \"*flag*\"}\n```",
+      "answer": "FLAG-Windows-{{ 500000 | random }}",
       "variant_answers": true,
-      "reference_solution": [],
-      "mitre_techniques": [
-        {
-          "technique_key": "TA0004.T1068"
-        },
-        {
-          "technique_key": "TA0043.T1592"
-        }
-      ],
-      "expected_commands": [
-        "cat",
-        "ls",
-        "sudo"
-      ],
-      "commands_required": true
+      "hints": [
+        "Check C:\\Training directory",
+        "Look for hidden files (use -Force parameter)",
+        "Event logs might contain useful information"
+      ]
     },
     {
-      "title": "Test Example",
-      "level_type": "ASSESSMENT_LEVEL",
-      "order": 5,
-      "estimated_duration": 5,
-      "minimal_possible_solve_time": null,
-      "questions": [
-        {
-          "question_type": "FFQ",
-          "text": "What was the name of a file storing the answer?",
-          "points": 100,
-          "penalty": 0,
-          "order": 0,
-          "answer_required": true,
-          "choices": [
-            {
-              "text": "flag.txt",
-              "correct": true,
-              "order": 0
-            }
-          ]
-        },
-        {
-          "question_type": "MCQ",
-          "text": "The Telnet service was running on the default port.",
-          "points": 100,
-          "penalty": 0,
-          "order": 1,
-          "answer_required": true,
-          "choices": [
-            {
-              "text": "Yes",
-              "correct": false,
-              "order": 0
-            },
-            {
-              "text": "No",
-              "correct": true,
-              "order": 1
-            }
-          ]
-        },
-        {
-          "question_type": "EMI",
-          "text": "Match services with their default port numbers.",
-          "points": 100,
-          "penalty": 0,
-          "order": 2,
-          "answer_required": true,
-          "extended_matching_options": [
-            {
-              "text": "22",
-              "order": 0
-            },
-            {
-              "text": "23",
-              "order": 1
-            },
-            {
-              "text": "80",
-              "order": 2
-            },
-            {
-              "text": "443",
-              "order": 3
-            }
-          ],
-          "extended_matching_statements": [
-            {
-              "text": "HTTP",
-              "order": 0,
-              "correct_option_order": 2
-            },
-            {
-              "text": "SSH",
-              "order": 1,
-              "correct_option_order": 0
-            },
-            {
-              "text": "HTTPS",
-              "order": 2,
-              "correct_option_order": 3
-            },
-            {
-              "text": "Telnet",
-              "order": 3,
-              "correct_option_order": 1
-            }
-          ]
-        }
-      ],
-      "instructions": "A simple test.",
-      "assessment_type": "TEST"
+      "type": "training",
+      "title": "Level 4: Firewall Configuration",
+      "content": "## 🔥 Task: pfSense Firewall Rules\n\nAnalyze and modify the pfSense firewall configuration.\n\n**Network Layout:**\n- client-network: 192.168.30.0/24 (your access)\n- server-network: 192.168.20.0/24 (backend servers)\n\n**Tasks:**\n1. Access the pfSense web GUI or SSH\n2. View current firewall rules\n3. Add a rule to block ICMP (ping) from client to server network\n4. Test the new rule by pinging from Ubuntu server\n5. Find the firewall configuration flag\n\n**pfSense commands:**\n```bash\npfctl -sr  # Show rules\npfctl -f /etc/pf.conf  # Reload rules\n```",
+      "answer": "FLAG-Firewall-{{ 777777 | random }}",
+      "variant_answers": true,
+      "hints": [
+        "The firewall rules are in /etc/pf.conf",
+        "Use 'ping' to test connectivity",
+        "Check logs with 'tcpdump -i vtnet0'"
+      ]
     },
     {
-      "title": "Assessment Example",
-      "level_type": "ASSESSMENT_LEVEL",
-      "order": 6,
-      "estimated_duration": 5,
-      "minimal_possible_solve_time": null,
-      "questions": [
-        {
-          "question_type": "MCQ",
-          "text": "How did you connect to the client?",
-          "points": 0,
-          "penalty": 0,
-          "order": 0,
-          "answer_required": true,
-          "choices": [
-            {
-              "text": "Graphical user interface of CyberRangeCZ Platform",
-              "correct": false,
-              "order": 0
-            },
-            {
-              "text": "SSH",
-              "correct": false,
-              "order": 1
-            }
-          ]
-        },
-        {
-          "question_type": "EMI",
-          "text": "Do you agree that... ?",
-          "points": 0,
-          "penalty": 0,
-          "order": 1,
-          "answer_required": true,
-          "extended_matching_options": [
-            {
-              "text": "Very much",
-              "order": 0
-            },
-            {
-              "text": "A little bit",
-              "order": 1
-            },
-            {
-              "text": "Not really",
-              "order": 2
-            },
-            {
-              "text": "Not at all",
-              "order": 3
-            }
-          ],
-          "extended_matching_statements": [
-            {
-              "text": "Everything went smoothly",
-              "order": 0
-            },
-            {
-              "text": "The User Interface is nice",
-              "order": 1
-            },
-            {
-              "text": "The test was easy",
-              "order": 2
-            }
-          ]
-        },
-        {
-          "question_type": "FFQ",
-          "text": "How would you improve this demo?",
-          "points": 0,
-          "penalty": 0,
-          "order": 2,
-          "answer_required": false
-        }
-      ],
-      "instructions": "Please answer the questions. The last question is voluntary.",
-      "assessment_type": "QUESTIONNAIRE"
+      "type": "info",
+      "title": "Training Complete",
+      "content": "## ✅ Congratulations!\n\nYou have successfully completed all levels of the Library Demo Training!\n\n### What You've Learned:\n- ✓ Linux system navigation and file searching\n- ✓ REST API interaction with Signal Server\n- ✓ Windows Server administration basics\n- ✓ pfSense firewall rule configuration\n\n### Additional Resources:\n- Check the training materials in each VM\n- Review the Ansible playbook used for provisioning\n- Experiment with additional configurations\n\n### Feedback:\nPlease provide feedback on this training to help us improve!\n\nThank you for participating!"
     }
-  ],
-  "estimated_duration": 45,
-  "variant_sandboxes": false
+  ]
 }

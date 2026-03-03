@@ -4,40 +4,40 @@ hosts:
   - name: ubuntu-server
     base_box:
       image: ubuntu-noble-x86_64
-      man_user: ubuntu
+      mgmt_user: ubuntu
+      mgmt_protocol: SSH
     flavor: standard.small
     
   - name: signal-server
     base_box:
       image: Signal-Server
-      man_user: ubuntu
+      mgmt_user: ubuntu
+      mgmt_protocol: SSH
     flavor: standard.small
     
   - name: windows-host
     base_box:
       image: Windows-Server-2022-PW
-      man_user: Administrator
-      mgmt_protocol: WINRM  # Important for Windows access
-      connection_data:  # Additional WinRM settings
-        ansible_winrm_transport: credssp
-        ansible_winrm_server_cert_validation: ignore
+      mgmt_user: Administrator
+      mgmt_protocol: WINRM
     flavor: standard.small
 
 routers:
   - name: firewall
     base_box:
       image: pfsense-netgate
-      man_user: admin
+      mgmt_user: admin
+      mgmt_protocol: SSH
     flavor: standard.small
 
 networks:
   - name: server-network
     cidr: 192.168.20.0/24
-    accessible_by_user: false  # Hidden from trainees
+    accessible_by_user: false
     
   - name: client-network
     cidr: 192.168.30.0/24
-    accessible_by_user: true  # Trainees can access
+    accessible_by_user: true
 
 net_mappings:
   - host: ubuntu-server
@@ -58,7 +58,6 @@ router_mappings:
     network: client-network
     ip: 192.168.30.1
 
-# Optional: Add DNS configuration
 dns:
   - network: client-network
     forwarders:
