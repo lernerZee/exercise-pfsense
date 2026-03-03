@@ -1,39 +1,129 @@
 ---
-
-- name: disable qxl
-  hosts:
-    - routers
-    - hosts
+- name: Apply CyberRangeCZ base configuration to all hosts
+  hosts: all
   gather_facts: yes
   become: yes
-  tasks:
-    - include_role:
-        name: disable-qxl
-      when: ansible_os_family == 'Debian'
-
-- name: set up server
-  hosts: server
-  become: yes
   roles:
-    - name: server
-      telnet_port: "{{ telnet_port }}"
-      flag: "{{ alice_flag }}"
-      flag_2: "{{ root_flag }}"
-
-- name: set up client
-  hosts: client
-  become: yes
-  roles:
-    - name: user-access
-      user_access_username: user
-      user_access_password: Password123
-      user_access_sudo: True
-    - name: client
-
-- name: set up command logging
-  hosts: hosts
-  become: yes
-  roles:
+    - role: user-access
+      # This role handles user access configuration
+      # It automatically sets up SSH keys and access controls
+    - role: disable-qxl
+      when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+      # Disables QXL video driver for better performance in VMs
     - role: sandbox-logging
-      slf_destination_port: '{% if hostvars["man"] is defined -%} 514 {%- else -%} 515 {%- endif %}'
-...
+      # Sets up centralized logging for the sandbox
+
+- name: Configure Ubuntu Server
+  hosts: ubuntu-server
+  become: yes
+  roles:
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+  tasks:
+    - name: Create additional training materials
+      copy:
+        content: |
+          Welcome to the Ubuntu Server Training Environment!
+          This VM is part of the Library Demo Training.
+          
+          Network Information:
+          - Management IP: {{ ansible_host }}
+          - Training Network IP: 192.168.30.10
+          
+          Available services:
+          - Docker is installed and ready
+          - Practice files in /opt/training
+          
+          For support, contact your instructor.
+        dest: /etc/motd
+    - name: Create practice directory
+      file:
+        path: /opt/training
+        state: directory
+        mode: '0755'
+    - name: Add practice flag file
+      copy:
+        content: "FLAG-{{ 1000000 | random }}\n"
+        dest: /opt/training/flag.txt
+        mode: '0644'
+
+- name: Configure Signal Server
+  hosts: signal-server
+  become: yes
+  tasks:
+    - name: Check if Signal service exists
+      stat:
+        path: /etc/systemd/system/signal-server.service
+      register: signal_service
+    - name: Start Signal service if it exists
+      systemd:
+        name: signal-server
+        state: started
+        enabled: yes
+      when: signal_service.stat.exists
+    - name: Create Signal Server info
+      copy:
+        content: |
+          Signal Server is running
+          API endpoint: http://{{ ansible_default_ipv4.address }}:8080
+          
+          Training tasks:
+          1. Connect to the Signal Server API
+          2. Send a test message
+        dest: /opt/training/README
+        mode: '0644'
+
+- name: Configure Windows Host
+  hosts: windows-host
+  tasks:
+    - name: Ensure WinRM is properly configured for CyberRangeCZ
+      win_shell: |
+        # Configure WinRM for CyberRangeCZ access
+        winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+        winrm set winrm/config/service/auth '@{Basic="true"}'
+        winrm set winrm/config/client/auth '@{Basic="true"}'
+        winrm set winrm/config/service/auth '@{CredSSP="true"}'
+        
+        # Configure firewall for WinRM
+        netsh advfirewall firewall add rule name="WinRM HTTP" dir=in action=allow protocol=TCP localport=5985
+        
+        # Enable PSRemoting
+        Enable-PSRemoting -Force
+        
+        # Set execution policy
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+      ignore_errors: yes
+    
+    - name: Enable RDP access
+      win_regedit:
+        path: HKLM:\System\CurrentControlSet\Control\Terminal Server
+        name: fDenyTSConnections
+        data: 0
+        type: dword
+    
+    - name: Configure Windows Firewall for RDP
+      win_shell: |
+        netsh advfirewall firewall set rule group="Remote Desktop" new enable=Yes
+      ignore_errors: yes
+    
+    - name: Create training folder
+      win_file:
+        path: C:\Training
+        state: directory
+    
+    - name: Add training instructions
+      win_copy:
+        content: |
+          Windows Server Training Environment
+          
+          Available credentials:
+          - Username: trainee
+          - Password: (provided by user-access role)
+          
+          Practice tasks:
+          1. Explore Windows Server features
+          2. Check installed roles and features
+          3. Configure a simple web server
+          
+          For help, contact your instructor.
+        dest: C:\Training\README.txt
