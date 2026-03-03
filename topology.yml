@@ -23,7 +23,7 @@ hosts:
 routers:
   - name: firewall
     base_box:
-      image: pfsense-netgate
+      image: pfsense-2.8
       mgmt_user: admin
     flavor: standard.small
 
