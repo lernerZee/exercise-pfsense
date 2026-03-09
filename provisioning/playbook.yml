@@ -51,27 +51,11 @@
   hosts: signal-server
   become: yes
   tasks:
-    - name: Check if Signal service exists
-      stat:
-        path: /etc/systemd/system/signal-server.service
-      register: signal_service
-    - name: Start Signal service if it exists
+    - name: Ensure Signal service is running
       systemd:
         name: signal-server
         state: started
         enabled: yes
-      when: signal_service.stat.exists
-    - name: Create Signal Server info
-      copy:
-        content: |
-          Signal Server is running
-          API endpoint: http://{{ ansible_default_ipv4.address }}:8080
-          
-          Training tasks:
-          1. Connect to the Signal Server API
-          2. Send a test message
-        dest: /opt/training/README
-        mode: '0644'
 
 - name: Configure Windows Host
   hosts: windows-host
