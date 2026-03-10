@@ -13,9 +13,9 @@ hosts:
       mgmt_user: ubuntu
     flavor: standard.small
     
-  - name: Ejabberd
+  - name: ejabberd
     base_box:
-      image: Ejabberd
+      image: ejabberd
       mgmt_user: Administrator
       mgmt_protocol: ubuntu
     flavor: standard.small
