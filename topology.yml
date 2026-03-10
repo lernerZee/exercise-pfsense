@@ -13,11 +13,11 @@ hosts:
       mgmt_user: ubuntu
     flavor: standard.small
     
-  - name: windows-host
+  - name: Ejabberd
     base_box:
-      image: Windows-Server-2022-PW
+      image: Ejabberd
       mgmt_user: Administrator
-      mgmt_protocol: WINRM
+      mgmt_protocol: ubuntu
     flavor: standard.small
 
 routers:
