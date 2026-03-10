@@ -16,8 +16,7 @@ hosts:
   - name: ejabberd
     base_box:
       image: ejabberd
-      mgmt_user: Administrator
-      mgmt_protocol: ubuntu
+      mgmt_user: ubuntu
     flavor: standard.small
 
 routers:
