@@ -1,10 +1,10 @@
 name: library-demo-training
 
 hosts:
-  - name: ubuntu-server
+  - name: attacker
     base_box:
-      image: ubuntu-noble-x86_64
-      mgmt_user: ubuntu
+      image: kali-linux
+      mgmt_user: kali
     flavor: standard.small
     
   - name: signal-server
@@ -15,7 +15,7 @@ hosts:
     
   - name: ejabberd
     base_box:
-      image: ejabberd
+      image: Ejabberd
       mgmt_user: ubuntu
     flavor: standard.small
 
@@ -36,15 +36,15 @@ networks:
     accessible_by_user: true
 
 net_mappings:
-  - host: ubuntu-server
-    network: server-network
-    ip: 192.168.20.10
-
   - host: signal-server
     network: server-network
     ip: 192.168.20.20
 
   - host: ejabberd
+    network: server-network
+    ip: 192.168.20.30
+
+  - host: attacker
     network: client-network
     ip: 192.168.30.50
 
